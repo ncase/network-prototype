@@ -1,0 +1,98 @@
+<!doctype>
+<html>
+<head>
+	
+	<!-- Meta -->
+	<title>NETWORK</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="styles/index.css">
+
+</head>
+<body>
+
+<svg id="model"></svg>
+
+<div id="code_container">
+<textarea id="code">
+//////////////////////////////
+// THE OPINION DYNAMICS SIM //
+//////////////////////////////
+
+// Person starts off with
+// one of two opinions
+me.init = function(){
+    me.threshold = _random(0.5,1);
+    if(_chance(0.5)){
+        me.setState("red");
+    }else{
+        me.setState("blue");
+    }
+};
+
+// Click a person to switch opinion
+me.graphics.click(function(){
+    if(me.state=="red"){
+        me.setState("blue");
+        return;
+    }
+    if(me.state=="blue"){
+        me.setState("red");
+        return;
+    }
+});
+
+// If THRESHOLD% of neighbors are of
+// diff opinion, switch over.
+me.update = function(){
+    if(me.state=="red" && me.getProportionOfNeighbors("blue")>me.threshold){
+        me.setState("blue");
+        return;
+    }
+    if(me.state=="blue" && me.getProportionOfNeighbors("red")>me.threshold){
+        me.setState("red");
+        return;
+    }
+};
+
+///////////////////////////////////
+// MISC CRAP - DRAWING THE NODES //
+// & MAKING THE GRAPH /////////////
+///////////////////////////////////
+
+// Colors
+var colors = {
+    red: "#cc2727",
+    blue: "#27cccc"
+};
+
+// Draw
+var bg = me.graphics.circle(0,0,8);
+me.graphics.attr({ cursor:"pointer" });
+me.draw = function(){
+    bg.attr({
+        fill: colors[me.state]
+    });
+};
+
+window.SPACE = 25;
+window.WOBBLE = 5;
+window.RADIUS = 30;
+</textarea>
+<div id="run" onclick="init()">reset</div>
+</div>
+
+</body>
+</html>
+
+<!-- External Libraries -->
+<script src="scripts/lib/snap.svg-min.js"></script>
+<script src="scripts/lib/minpubsub-modified.js"></script>
+
+<!-- Core Code -->
+<script src="scripts/helpers.js"></script>
+
+<!-- Main Script -->
+<script src="scripts/main.js"></script>

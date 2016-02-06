@@ -1,0 +1,52 @@
+body{
+	margin: 5px;
+}
+#model{
+	width:500px;
+	height:500px;
+	border: 1px solid #ccc;
+	float:left;
+	margin-right: 5px;
+}
+#code_container{
+	width: 350px;
+    height: 500px;
+    float: left;
+}
+#code{
+	border: 1px solid #ccc;
+    display: block;
+    width: 350px;
+    height: 450px;
+	padding: 10px;
+    font-family: monospace;
+    font-size: 12px;
+    background: #eee;
+}
+#run{
+	
+	font-family: Helvetica;
+	font-size: 25px;
+	font-weight: 100;
+	text-align: center;
+
+	margin-top:10px;
+	padding: 5px;
+
+	background: #000;
+	color: #fff;
+
+	border:none;
+	border-radius: 40px;
+	
+	width:100px;
+	height:30px;
+
+	cursor: pointer;
+
+	-webkit-user-select: none;  /* Chrome all / Safari all */
+	-moz-user-select: none;     /* Firefox all */
+	-ms-user-select: none;      /* IE 10+ */
+	user-select: none;          /* Likely future */
+
+}

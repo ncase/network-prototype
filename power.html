@@ -1,0 +1,100 @@
+<!doctype>
+<html>
+<head>
+	
+	<!-- Meta -->
+	<title>NETWORK</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="styles/index.css">
+
+</head>
+<body>
+
+<svg id="model"></svg>
+
+<div id="code_container">
+<textarea id="code">
+////////////////////////
+// THE POWER GRID SIM //
+////////////////////////
+
+// Plant starts off functioning,
+// and with a certain load & limit
+me.init = function(){
+    me.setState("working");
+    me.load = _random(0.5,1);
+    me.limit = 1;
+};
+
+// Click a power plant to make it fail
+me.graphics.click(function(){
+    me.fail();
+});
+
+// Plant fails!
+me.fail = function(){
+
+    // only if already working
+    if(me.state!="working") return;
+ 
+    // and pass the load equally
+    var count = me.countNeighbors();
+    me.forEachNeighbor(function(n){
+        n.load += me.load/count;
+    });
+
+    // show my new state
+    me.setState("fail");
+
+    // re-draw neighbors
+    me.forEachNeighbor(function(n){
+        n.draw();
+    });
+
+};
+
+// Plant update.
+// If it goes over its load, fail.
+me.update = function(){
+    if(me.load>me.limit){
+        me.fail();
+    }
+};
+
+///////////////////////////////////
+// MISC CRAP - DRAWING THE NODES //
+// & MAKING THE GRAPH /////////////
+///////////////////////////////////
+
+// Draw
+var bg = me.graphics.circle(0,0,10).attr({fill:"#666"});
+var top = me.graphics.circle(0,0,10);
+me.graphics.attr({ cursor:"pointer" });
+me.draw = function(){
+    var scale = (me.state=="working") ? me.load : 1;
+    top.transform("scale("+scale+")");
+    top.attr({
+        fill: (me.state=="working") ? "#FFDE21" : "#cc2727"     
+    });
+};
+
+window.RADIUS = 70;
+</textarea>
+<div id="run" onclick="init()">reset</div>
+</div>
+
+</body>
+</html>
+
+<!-- External Libraries -->
+<script src="scripts/lib/snap.svg-min.js"></script>
+<script src="scripts/lib/minpubsub-modified.js"></script>
+
+<!-- Core Code -->
+<script src="scripts/helpers.js"></script>
+
+<!-- Main Script -->
+<script src="scripts/main.js"></script>

@@ -1,0 +1,86 @@
+<!doctype>
+<html>
+<head>
+	
+	<!-- Meta -->
+	<title>NETWORK</title>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+
+	<!-- Styles -->
+	<link rel="stylesheet" type="text/css" href="styles/index.css">
+
+</head>
+<body>
+
+<svg id="model"></svg>
+
+<div id="code_container">
+<textarea id="code">
+///////////////////////
+// THE INFECTION SIM //
+///////////////////////
+
+// Person starts off healthy
+// or, maybe, immunized
+me.init = function(){
+    if(_chance(0.2)){
+        me.setState("immunized");
+    }else{
+        me.setState("healthy");
+    }
+};
+
+// Click a person to make them sick
+me.graphics.click(function(){
+    me.setState("sick");
+});
+
+// If neighbor is sick, fall sick,
+// if not immunized.
+me.update = function(){
+    if(me.state=="healthy"
+        && me.isAnyNeighbor("sick")){
+        me.setState("sick");
+    }
+};
+
+///////////////////////////////////
+// MISC CRAP - DRAWING THE NODES //
+// & MAKING THE GRAPH /////////////
+///////////////////////////////////
+
+// Colors
+var colors = {
+    healthy: "#ffde21",
+    sick: "#27cccc",
+    immunized: "#666666"
+};
+
+// Draw
+var bg = me.graphics.circle(0,0,10);
+me.graphics.attr({ cursor:"pointer" });
+me.draw = function(){
+    bg.attr({
+        fill: colors[me.state]
+    });
+};
+
+window.RADIUS = 70;
+
+</textarea>
+<div id="run" onclick="init()">reset</div>
+</div>
+
+</body>
+</html>
+
+<!-- External Libraries -->
+<script src="scripts/lib/snap.svg-min.js"></script>
+<script src="scripts/lib/minpubsub-modified.js"></script>
+
+<!-- Core Code -->
+<script src="scripts/helpers.js"></script>
+
+<!-- Main Script -->
+<script src="scripts/main.js"></script>
